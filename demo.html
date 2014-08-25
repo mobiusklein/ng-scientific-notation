@@ -1,0 +1,27 @@
+<!DOCTYPE html5>
+<html>
+<head>
+    <title>ngScientificNotation</title>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('ngScientificNotation')
+        app.controller("exampleCtrl", ["$scope", function($scope){
+            $scope.numbers = [
+                1232,
+                0.03232,
+                0.230232000129893,
+                1232323344.32
+                1975840
+            ]
+        }])
+    </script>
+    <script src="scientific-notation.js"></script>
+</head>
+<body ng-app="ngScientificNotation">
+    <div ng-controller="exampleCtrl">
+        <div ng-repeat="number in numbers">
+            <span>{{number}}</span> &rarr; <span>{{number|ngScientificNotation}}</span>
+        </div>
+    </div>
+</body>
+</html>
