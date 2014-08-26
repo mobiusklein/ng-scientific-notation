@@ -2,26 +2,74 @@
 <html>
 <head>
     <title>ngScientificNotation</title>
+    <style>
+input{
+    border: 1px black solid;
+    border-radius: 2px;
+    padding: 5px;
+}
+span.results{
+    text-decoration: underline;
+
+}
+    </style>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
     <script type="text/javascript">
-        var app = angular.module('ngScientificNotation')
-        app.controller("exampleCtrl", ["$scope", function($scope){
+        var app = angular.module('ngScientificNotation', [])
+        app.controller("exampleCtrl", ["$scope", function($scope, $filter){
             $scope.numbers = [
-                1232,
-                0.03232,
-                0.230232000129893,
-                1232323344.32
-                1975840
+                {value: 1232},
+                {value: 0.03232},
+                {value: 0.230232000129893},
+                {value: 1232323344.32},
+                {value: 1975840},
             ]
+            $scope.params = {}
+            $scope.params.decimals = 4
+            $scope.params.fractions = 3
         }])
     </script>
     <script src="scientific-notation.js"></script>
 </head>
-<body ng-app="ngScientificNotation">
+<body ng-app="ngScientificNotation" class=''>
     <div ng-controller="exampleCtrl">
+       <label>Decimal places to include</label><input type='number' ng-model='params.decimals'/>
+       Minimum mantissa size to format on <input type='numer' ng-model='params.fractions'/>        
         <div ng-repeat="number in numbers">
-            <span>{{number}}</span> &rarr; <span>{{number|ngScientificNotation}}</span>
+            <input type='number' style='width:20%;' ng-model='number.value'></span> <span>&rarr; 
+            <span class='results' ng-bind="number.value | scientificNotation:{decimals:params.decimals, fraction:params.fractions}"></span></span>
         </div>
     </div>
+    <pre>
+        <code>
+    &lt;script type="text/javascript"&gt;
+        var app = angular.module('ngScientificNotation', [])
+        app.controller("exampleCtrl", ["$scope", function($scope, $filter){
+            $scope.numbers = [
+                {value: 1232},
+                {value: 0.03232},
+                {value: 0.230232000129893},
+                {value: 1232323344.32},
+                {value: 1975840},
+            ]
+            $scope.params = {}
+            $scope.params.decimals = 4
+            $scope.params.fractions = 3
+        }])
+    &lt;/script&gt;
+    &lt;script src="scientific-notation.js"&gt;&lt;/script&gt;
+     &lt;body ng-app="ngScientificNotation" class=''&gt;
+    &lt;div ng-controller="exampleCtrl"&gt;
+       &lt;label&gt;Decimal places to include&lt;/label&gt;&lt;input type='number' ng-model='params.decimals'/&gt;
+       Minimum mantissa size to format on &lt;input type='numer' ng-model='params.fractions'/&gt;        
+        &lt;div ng-repeat="number in numbers"&gt;
+            &lt;input type='number' style='width:20%;' ng-model='number.value'&gt;&lt;/span&gt; &lt;span&gt;&rarr; 
+            &lt;span class='results' ng-bind="number.value | scientificNotation:{decimals:params.decimals, fraction:params.fractions}"&gt;&lt;/span&gt;&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;/body&gt;
+
+        </code>
+    </pre>
 </body>
 </html>

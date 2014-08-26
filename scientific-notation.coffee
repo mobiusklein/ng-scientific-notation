@@ -7,10 +7,9 @@ angular.module("ngScientificNotation").filter "scientificNotation",
         decimals = options.decimals || 5
         # Account for lead integer and decimal point by adding 2
         fractionSize = (options.fraction || 5) + 2
-        input = parseFloat(input) if (typeof input) is not "number"
+        input = parseFloat(input) if (typeof input) != "number"
         stringForm = input.toString()
         if (input < (10 ** decimals)) and (stringForm.indexOf('.') != -1)
-            console.log("ping", (stringForm.indexOf('.')  != -1))
             [integer, mantissa] = stringForm.split(".")
             if ((mantissa.length > decimals) or (stringForm.length > (decimals * 2)))
                 sciNot = input.toExponential()
