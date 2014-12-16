@@ -8,13 +8,21 @@ input{
     border: 1px black solid;
     border-radius: 2px;
     padding: 15px;
+    margin: 3px;
 }
 code{
-    color: red;
+    color: maroon !important;
 }
 span.results{
     text-decoration: underline;
+}
 
+span.to-exp-results{
+    margin-left: 20px;
+}
+
+#code-example {
+    margin: 15px;
 }
 
     </style>
@@ -36,15 +44,35 @@ span.results{
     </script>
     <script src="scientific-notation.js"></script>
 </head>
-<body ng-app="ngScientificNotation" class=''>
+<body ng-app="ngScientificNotation" class='container'>
     <div ng-controller="exampleCtrl">
-       <label>Decimal places to include</label><input type='number' ng-model='params.decimals'/>
-       Minimum mantissa size to format on <input type='numer' ng-model='params.fractions'/>        
-        <div ng-repeat="number in numbers">
-            <input type='number' style='width:20%;' ng-model='number.value'></span> <span>&rarr; 
-            <span class='results' ng-bind="number.value | scientificNotation:{decimals:params.decimals, fraction:params.fractions}"></span></span>
+        <div>
+            <h2>ng-scientific-notation</h2>
+            <div>
+                <p>
+                    While trying to generically display numbers that span several orders of magnitude, I often want to use scientific notation for very large or very small numbers. The function <code>Number.prototype.toExponential</code> can do this formatting task for me, but it has unfortunate side-effects, like including lots of trailing zeroes if the numbers aren't extreme enough. <code>toExponential</code> has no notion of when a number isn't within some textual range that makes sense for using scientifc notation, making an easy to read number require more work.
+                </p>
+                <p>
+                    This simple directive deals with this problem. Given a set of parameters controlling the textual representation of the number, it will minimize the amount of clutter and misleading text from the number representation. The <code>decimals</code> parameter controls how many decimal places to render before switching to scientific notation. Numbers with fewer digits on either side of the decimal place will not be rendered in scientific notation. The <code>fraction</code> parameter controls how many decimal places to render when rendering a number in scientific notation. In other words it controls the size of the mantissa displayed before the exponent. 
+                </p>
+                <p>
+                    You can see how the parameters control number representations by changing these parameters, and by modifying the numbers in the example boxes below.
+                </p>
+            </div>
+        </div>
+        <label>Decimal places to include</label><input type='number' ng-model='params.decimals'/>
+        <label>Minimum mantissa size to format on</label><input type='number' ng-model='params.fractions'/>     
+        <div ng-repeat="number in numbers">            
+            <input type='number' style='width:20%;' ng-model='number.value'></span> 
+            <span>&rarr; 
+                <span class='results' ng-bind="number.value | scientificNotation:{decimals:params.decimals, fraction:params.fractions}">
+                </span>
+                <span class='to-exp-results'>vs. {{number.value.toExponential(params.decimals)}} using <code>toExponential({{params.decimals}})</code></span>
+            </span>
         </div>
     </div>
+    <div id="code-example">
+    Code used to generate this example:
     <pre>
         <code>
     &lt;script type="text/javascript"&gt;
@@ -66,16 +94,23 @@ span.results{
     &lt;script src="scientific-notation.js"&gt;&lt;/script&gt;
      &lt;body ng-app="ngScientificNotation" class=''&gt;
      &lt;div ng-controller="exampleCtrl"&gt;
-       &lt;label&gt;Decimal places to include&lt;/label&gt;&lt;input type='number' ng-model='params.decimals'/&gt;
-       Minimum mantissa size to format on &lt;input type='numer' ng-model='params.fractions'/&gt;        
-        &lt;div ng-repeat="number in numbers"&gt;
-            &lt;input type='number' style='width:20%;' ng-model='number.value'&gt;&lt;/span&gt; &lt;span&gt;&rarr; 
-            &lt;span class='results' ng-bind="number.value | scientificNotation:{decimals:params.decimals, fraction:params.fractions}"&gt;&lt;/span&gt;&lt;/span&gt;
+        &lt;label&gt;Decimal places to include&lt;/label&gt;&lt;input type='number' ng-model='params.decimals'/&gt;
+        &lt;label&gt;Minimum mantissa size to format on&lt;/label&gt;&lt;input type='number' ng-model='params.fractions'/&gt;     
+
+        &lt;div ng-repeat="number in numbers"&gt;            
+            &lt;input type='number' style='width:20%;' ng-model='number.value'&gt;&lt;/span&gt; 
+            &lt;span&gt;&rarr; 
+                &lt;span class='results' ng-bind="number.value | scientificNotation:{decimals:params.decimals, fraction:params.fractions}"&gt;
+                &lt;/span&gt;
+                &lt;span class='to-exp-results'&gt;vs. {{number.value.toExponential(params.decimals)}} using &lt;code&gt;toExponential({{params.decimals}})&lt;/code&gt;&lt;/span&gt;
+            &lt;/span&gt;
+        &lt;/div&gt;
         &lt;/div&gt;
      &lt;/div&gt;
     &lt;/body&gt;
 
         </code>
     </pre>
+    </div>
 </body>
 </html>
